@@ -8,7 +8,6 @@ function CreateUser() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   function handleSubmit(e) {
-    console.log("hello");
     e.preventDefault();
     if(!username) return ;
     dispatch(updateUserName(username));

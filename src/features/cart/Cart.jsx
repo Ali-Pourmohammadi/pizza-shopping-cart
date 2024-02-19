@@ -2,7 +2,9 @@ import { Link } from 'react-router-dom';
 import ButtonLink from '../ui/ButtonLink';
 import Button from '../ui/Button';
 import CartItem from './CartItem';
-import { useSelector } from 'react-redux';
+import EmptyCart from "./EmptyCart"
+import { useDispatch, useSelector } from 'react-redux';
+import { clearCart, getCart } from './cartSlice';
 
 // just for complete ui
 // const fakeCart = [
@@ -30,21 +32,22 @@ import { useSelector } from 'react-redux';
 // ];
 
 function Cart() {
-  const cart = useSelector(state => state.cart.cart);
+  const cart = useSelector(getCart);
+  const dispatch = useDispatch();
   const userName = useSelector((state => state.user.userName));
- 
+  if(cart.length===0)return <EmptyCart/>
   return (
     <div className="px-4 py-3">
       <ButtonLink to="/menu">&larr; Back to menu</ButtonLink>
 
       <h2 className='mt-7 text-xl font-semibold'>{  `Your cart, ${userName}`}</h2>
       <ul className='divide-y divide-stone-200 border-b'>
-      {cart.map(item => <CartItem item={item} key={cart.pizzaId}/> )}
+      {cart.map(item => <CartItem item={item} key={item.id}/> )}
 
       </ul>
       <div className='mt-6 p-3 text-left'>
         <Button to="/order/new" type="primary">Order pizzas</Button>
-        <Button  type="secondary">Clear cart</Button>
+        <Button  type="secondary" onClick={()=>dispatch(clearCart())}>Clear cart</Button>
       </div>
     </div>
   );
